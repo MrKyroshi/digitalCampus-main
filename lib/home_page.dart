@@ -1,3 +1,4 @@
+import 'package:firapplicationdigtitalcampus/controller/firestorehelper.dart';
 import 'package:firapplicationdigtitalcampus/dashboard.dart';
 import 'package:firapplicationdigtitalcampus/view/Inscription.dart';
 import 'package:flutter/material.dart';
@@ -62,11 +63,17 @@ class _MyHomeState extends State<MyHome> {
               onPressed: (){
                 //action du bouton
                 //naviguer vers la page dashboard
-                Navigator.push(context, MaterialPageRoute(
-                    builder: (context){
-                      return DashBoard(password: passwordController.text,);
-                    }
-                ));
+                FirestoreHelper().connexionUtilisateur(mailController.text, passwordController.text).then((value){
+                  Navigator.push(context, MaterialPageRoute(
+                      builder: (context){
+                        return DashBoard(password: passwordController.text,);
+                      }
+                  ));
+                }).catchError((onError){
+                  print(onError);
+                });
+
+
               },
               child: const Text("Connection")
           ),
